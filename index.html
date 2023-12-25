@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Count Interest</title>
+    <link rel="stylesheet" href="style.css">
+<script>
+ let timeout;
+
+    function BounceCountInt(){
+        clearTimeout(timeout);
+        timeout = setTimeout(()=>{
+            countInterest();
+        }, 1000)
+    }
+
+     function countInterest(){
+        var principal = document.getElementById("principal").value;
+        var rate = document.getElementById("rate").value;
+        var time = document.getElementById("time").value;
+        fetch(`http://localhost:3001/interest?principal=${principal}&rate=${rate}&time=${time}`).then((res)=>{
+           
+            res.text().then((data)=>{
+               data = JSON.parse(data);
+            
+                document.getElementById("interestResult").innerHTML = `Interest: ${data.interest}`;
+                document.getElementById("totalAmountResult").innerHTML = `TotalAmount: ${data.totalamount}`;
+            })
+        })  
+    };
+</script>
+</head>
+<body>
+    <div class="container">
+    <h1>Count Interest</h1>
+    <label for="principal">Principal</label>
+    
+    <input   type="number" name="principal" id="principal">
+  
+    <label for="rate">Rate</label>
+ 
+    <input  type="number" name="rate" id="rate">
+
+    <label for="time">Time</label>
+ 
+    <input oninput="BounceCountInt()" type="number" name="time" id="time">
+    
+    <!-- <button type ="submit" id="btn" onclick="countInterest()" method="GET">Calculate</button> -->
+
+  
+<h4 id="interestResult"></h4>
+<h4 id="totalAmountResult"></h4>
+
+</div>
+</body>
+</html>
